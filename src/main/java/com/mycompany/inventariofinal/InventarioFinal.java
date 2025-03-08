@@ -5,5 +5,6 @@ public class InventarioFinal {
         System.out.println("Negromorfo");
         
         System.out.println("Virgen");
+        System.out.println("Puta madre con el nombre del commit anterior");
     }
 }
