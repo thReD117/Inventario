@@ -2,35 +2,35 @@ package Ropa;
 
 import Enums.*;
 
-public class Prenda {
+public class Clothe {
     protected String size, material, color, description, id;
     protected float price;
     protected int quantity;
-    protected Temporada Season;
-    protected Genero gender;
-    protected Tipo type;
+    protected Season season;
+    protected Gender gender;
+    protected Type type;
 
-    public Tipo getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Tipo type) {
+    public void setType(Type type) {
         this.type = type;
     }
     
-    public Temporada getSeason() {
-        return Season;
+    public Season getSeason() {
+        return season;
     }
 
-    public void setSeason(Temporada Season) {
-        this.Season = Season;
+    public void setSeason(Season Season) {
+        this.season = Season;
     }
 
-    public Genero getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Genero gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
     

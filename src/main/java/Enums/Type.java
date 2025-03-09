@@ -1,4 +1,4 @@
 package Enums;
-public enum Tipo {
+public enum Type {
     SUPERIOR, INFERIOR, ACCESORIOS, INTERIOR;
 }

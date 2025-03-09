@@ -1,4 +1,4 @@
 package Enums;
-public enum Temporada {
+public enum Season {
     SPRING, SUMMER, AUTUMN, WINTER;
 }

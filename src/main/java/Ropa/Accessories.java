@@ -1,14 +1,14 @@
 package Ropa;
 import Enums.*;
-public class Interior extends Clothe{
-    protected CategoryInte category;
-    protected String type_category;
+public class Accessories extends Clothe{
+   protected CategoryAcc category;
+   protected String type_category; //Guarada el tipo de accesorio seleccionado ejemplo "Anillo: Halo Ring"
 
-    public CategoryInte getCategory() {
+    public CategoryAcc getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryInte category) {
+    public void setCategory(CategoryAcc category) {
         this.category = category;
     }
 
@@ -19,8 +19,8 @@ public class Interior extends Clothe{
     public void setType_category(String type_category) {
         this.type_category = type_category;
     }
-    
-    public Interior(String size, String material, String color, String description, String id, String type_category, float price, int quantity, Season season, Gender gender, Type type, CategoryInte category) {
+
+    public Accessories(String size, String material, String color, String description, String id, String type_category, float price, int quantity, Season season, Gender gender, Type type, CategoryAcc category) {
         this.size=size;
         this.material=material;
         this.color=color;
@@ -34,4 +34,6 @@ public class Interior extends Clothe{
         this.type=type;
         this.category=category;
     }
+    
+    
 }
