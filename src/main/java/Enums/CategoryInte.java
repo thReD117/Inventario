@@ -1,17 +1,28 @@
 package Enums;
-public enum CategoryInte {
-    BRAS,
-    PANTIES,
-    BODYSUITS,
-    SHAPEWEAR,
-    LINGERIE,
-    UNDERSHIRTS,
-    TIGHTS,
-    BOXERS,
-    BRIEFS,
-    TRUNKS,
-    SLIPS,
-    PAJAMAs,
-    BATHROBES,
-    SOCKS;
+public enum CategoryInte implements CategoryEnumerable{
+    BRAS("Sostén"),
+    PANTIES("Braga"),
+    BODYSUITS("Body"),
+    SHAPEWEAR("Faja"),
+    LINGERIE("Lencería"),
+    UNDERSHIRTS("Camiseta interior"),
+    TIGHTS("Pantyhose"),
+    BOXERS("Boxer"),
+    BRIEFS("Bóxers ajustados"),
+    TRUNKS("Bóxers largos"),
+    SLIPS("Pantis"),
+    PAJAMAs("Pijama"),
+    BATHROBES("Bata"),
+    SOCKS("Calcetín");
+
+    private final String displayName;
+
+    CategoryInte(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @Override
+    public String getCategory() {
+        return displayName;
+    }
 }
