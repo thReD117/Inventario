@@ -62,4 +62,26 @@ public class ClothingGroup {
     public int getSize(){
         return clothingGroup.size();
     }
+
+   public Clothing getById(String id) {
+    if (id == null || id.isEmpty()) {
+        throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+    }
+    return clothingGroup.get(id); 
 }
+
+
+    boolean removeById(String id) {
+    if (id == null || id.isEmpty()) {
+        throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+    }
+    Clothing removedClothing = clothingGroup.remove(id); 
+    return removedClothing != null; 
+}
+
+}
+
+
+    
+
+
