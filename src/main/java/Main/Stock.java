@@ -28,6 +28,7 @@ public class Stock {
      * @return Devulve un ArrayList con todas las prendas en todos los grupos del stock ordenado mediante el id completo.
      */
     public ArrayList<Clothing> listFullStock(){
+        createStockList();
         return fullStock;
     }
    
@@ -52,12 +53,7 @@ public class Stock {
      * @throws Exceptions.GroupNotFoundException
      */
     public void clearGroupById(String groupId) throws InvalidIdException, GroupNotFoundException{
-        if(groupId.contains("-"))
-            throw new InvalidIdException("Id de grupo inválida"); 
-        ClothingGroup clothingGroup = stock.get(groupId);
-        if(clothingGroup == null)
-            throw new GroupNotFoundException("Grupo de ropa no encontrado"); 
-        
+        ClothingGroup clothingGroup = getClothingGroupByGroupId(groupId);
         clothingGroup.clearGroup();
     }
     
@@ -65,11 +61,12 @@ public class Stock {
     /**
      * Modifica un item que ya exista en algún grupo. Eliminará el item anterior de dicho grupo e insertará el nuevo item 
      * en el grupo correspondiente
-     * @param id
-     * @param item 
+     * @param id id del objeto a modificar(eliminar)
+     * @param item el nuevo obj clothing que será insertado
      */
-    public void modifyItem(String id, Clothing item){
-        
+    public void modifyItem(String id, Clothing item) throws ItemNotFoundException, InvalidIdException, GroupNotFoundException{
+        deleteClothingById(id);
+        add(item);
     }
     
     /**
@@ -84,33 +81,64 @@ public class Stock {
      * @throws Exceptions.GroupNotFoundException
      */
     public void modifyGroup(String groupId, Clothing itemTemplate) throws InvalidIdException, GroupNotFoundException{
+        ClothingGroup clothingGroup = getClothingGroupByGroupId(groupId);
+
+        int objectsToCreate = clothingGroup.getSize();
+        clothingGroup.clearGroup();
+        for(int i=0; i<objectsToCreate; i++){
+            add(itemTemplate.clone());
+        }
+    }
+     
+    public Clothing searchById(String id) throws ItemNotFoundException, InvalidIdException, GroupNotFoundException {
+        ClothingGroup clothingGroup = getClothingGroupByFullId(id);
+        
+        Clothing clothing = clothingGroup.getById(id.split("-")[1]);
+        if(clothing == null)
+            throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
+        return clothing;
+    }
+     
+     
+    public void deleteClothingById(String id) throws ItemNotFoundException, InvalidIdException, GroupNotFoundException {
+        ClothingGroup clothingGroup = getClothingGroupByFullId(id);
+        
+        if(!clothingGroup.removeById(id.split("-")[1]))
+            throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
+    }
+     
+    /**
+     * Libera de la responsabilidad de hacer esto a los métodos de las operaciones básicas
+     * @param groupId
+     * @return
+     * @throws InvalidIdException
+     * @throws GroupNotFoundException 
+     */
+    public ClothingGroup getClothingGroupByGroupId(String groupId) throws InvalidIdException, GroupNotFoundException{
         if(groupId.contains("-"))
             throw new InvalidIdException("Id de grupo inválida"); 
         ClothingGroup clothingGroup = stock.get(groupId);
         if(clothingGroup == null)
-            throw new GroupNotFoundException("El grupo no fue encontrado");
+            throw new GroupNotFoundException("Grupo de ropa no encontrado");
         
-        int objectsToCreate = clothingGroup.getSize();
-        clearGroupById(groupId);
-        for(int i=0; i<objectsToCreate; i++){
-            System.out.println(""); // IGNORAR
-        }
+        return clothingGroup;
     }
-     public Clothing searchById(String id) throws ItemNotFoundException {
-        for (ClothingGroup group : stock.values()) {
-            Clothing item = group.getById(id);
-            if (item != null) {
-                return item;
-            }
-        }
-        throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
-    }
-     public void deleteClothingById(String id) throws ItemNotFoundException {
-        for (ClothingGroup group : stock.values()) {
-            if (group.removeById(id)) {
-                return;
-            }
-        }
-        throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
+    
+    /**
+     * Lo mismo que el método anterior
+     * @param id
+     * @return
+     * @throws InvalidIdException
+     * @throws GroupNotFoundException 
+     */
+    public ClothingGroup getClothingGroupByFullId(String id) throws InvalidIdException, GroupNotFoundException{
+        String[] idParts = id.split("-");
+        if(idParts.length != 2)
+            throw new InvalidIdException("La id no está completa");
+        ClothingGroup clothingGroup = stock.get(idParts[0]);
+        if(clothingGroup == null)
+            throw new GroupNotFoundException("Grupo de ropa no encontrado");
+        
+        return clothingGroup;
     }
 }

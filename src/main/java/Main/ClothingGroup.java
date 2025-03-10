@@ -64,21 +64,20 @@ public class ClothingGroup {
     }
 
    public Clothing getById(String id) {
-    if (id == null || id.isEmpty()) {
-        throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+        }
+        return clothingGroup.get(id); 
     }
-    return clothingGroup.get(id); 
-}
 
 
     boolean removeById(String id) {
-    if (id == null || id.isEmpty()) {
-        throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+        }
+        Clothing removedClothing = clothingGroup.remove(id); 
+        return removedClothing != null; 
     }
-    Clothing removedClothing = clothingGroup.remove(id); 
-    return removedClothing != null; 
-}
-
 }
 
 
