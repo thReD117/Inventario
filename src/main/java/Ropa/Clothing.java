@@ -18,6 +18,44 @@ public abstract class Clothing implements Comparable<Clothing>{
     protected String groupId; // Generada mediante las propiedades de la prenda
     protected String individualId; // Generada por su numero de item en ser añadido al stock
 
+    // Constructor general para todas las clases hijas
+    public Clothing(String size, String material, String color, String description, String type_category, float price, int quantity, Season season, Gender gender, Type type, CategoryEnumerable category) {
+        this.size=size;
+        this.material=material;
+        this.color=color;
+        this.description=description;
+        this.typeCategory=type_category;
+        this.price=price;
+        this.quantity=quantity;
+        this.season=season;
+        this.gender=gender;
+        this.type=type;
+        this.category=category;
+        this.groupId = generateGroupId();
+    }
+    
+    /**
+     * Constructor para clonar un objeto de tipo clothing
+     * @param other Elobjeto a clonar
+     */
+    public Clothing(Clothing other) {
+        this.size=other.size;
+        this.material=other.material;
+        this.color=other.color;
+        this.description=other.description;
+        this.typeCategory=other.typeCategory;
+        this.price=other.price;
+        this.quantity=other.quantity;
+        this.season=other.season;
+        this.gender=other.gender;
+        this.type=other.type;
+        this.category=other.category;
+        this.groupId = other.groupId;
+    }
+    
+    // Método abstracto para clonar los objetos
+    public abstract Clothing clone();
+    
     
     public Type getType() {return type;}
     public void setType(Type type) {this.type = type;}
