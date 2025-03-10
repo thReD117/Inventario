@@ -11,7 +11,6 @@ public abstract class Clothing implements Comparable<Clothing>{
     protected int quantity;
     protected Season season;
     protected Gender gender;
-    protected Type type;
     protected CategoryEnumerable category;
     
     protected String id; // Full id = groupId + individualId
@@ -19,7 +18,7 @@ public abstract class Clothing implements Comparable<Clothing>{
     protected String individualId; // Generada por su numero de item en ser añadido al stock
 
     // Constructor general para todas las clases hijas
-    public Clothing(String size, String material, String color, String description, String type_category, float price, int quantity, Season season, Gender gender, Type type, CategoryEnumerable category) {
+    public Clothing(String size, String material, String color, String description, String type_category, float price, int quantity, Season season, Gender gender, CategoryEnumerable category) {
         this.size=size;
         this.material=material;
         this.color=color;
@@ -29,7 +28,6 @@ public abstract class Clothing implements Comparable<Clothing>{
         this.quantity=quantity;
         this.season=season;
         this.gender=gender;
-        this.type=type;
         this.category=category;
         this.groupId = generateGroupId();
     }
@@ -48,17 +46,12 @@ public abstract class Clothing implements Comparable<Clothing>{
         this.quantity=other.quantity;
         this.season=other.season;
         this.gender=other.gender;
-        this.type=other.type;
         this.category=other.category;
         this.groupId = other.groupId;
     }
     
     // Método abstracto para clonar los objetos
     public abstract Clothing clone();
-    
-    
-    public Type getType() {return type;}
-    public void setType(Type type) {this.type = type;}
     
     public Season getSeason() {return season;}
     public void setSeason(Season Season) {this.season = Season;}
@@ -82,9 +75,12 @@ public abstract class Clothing implements Comparable<Clothing>{
     public void setId(String id) {this.id = id;}
 
     public String getGroupId() {return groupId;}
+    public void recalculateGroupId(){
+        this.groupId = generateGroupId();
+    }
     protected String generateGroupId(){
-        String rawData = size+material+color+description+price+quantity+season+gender+type+category.getCategory()+typeCategory;
-        return hashString(rawData, 12);
+        String rawData = size+material+color+description+price+quantity+season+gender+category.getCategory()+typeCategory;
+        return hashString(rawData, 12).toUpperCase();
     }
     
     /**
@@ -130,5 +126,18 @@ public abstract class Clothing implements Comparable<Clothing>{
     @Override
     public int compareTo(Clothing c){
         return this.id.compareToIgnoreCase(c.id);
+    }
+    
+    @Override
+    public String toString(){
+        return String.format("%1$s | %2$s | %3$s | %4$s | %5$s | %6$s",
+                id,
+                category.getCategory(),
+                gender,
+                color,
+                size,
+                season,
+                typeCategory
+                );        
     }
 }
