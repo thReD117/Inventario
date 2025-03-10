@@ -62,4 +62,12 @@ public class ClothingGroup {
     public int getSize(){
         return clothingGroup.size();
     }
+
+    Clothing getById(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    boolean removeById(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 }
