@@ -96,4 +96,21 @@ public class Stock {
             System.out.println(""); // IGNORAR
         }
     }
+     public Clothing searchById(String id) throws ItemNotFoundException {
+        for (ClothingGroup group : stock.values()) {
+            Clothing item = group.getById(id);
+            if (item != null) {
+                return item;
+            }
+        }
+        throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
+    }
+     public void deleteClothingById(String id) throws ItemNotFoundException {
+        for (ClothingGroup group : stock.values()) {
+            if (group.removeById(id)) {
+                return;
+            }
+        }
+        throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
+    }
 }
