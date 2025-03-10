@@ -66,6 +66,7 @@ public class Stock {
      */
     public void modifyItem(String id, Clothing item) throws ItemNotFoundException, InvalidIdException, GroupNotFoundException{
         deleteClothingById(id);
+        item.recalculateGroupId();
         add(item);
     }
     
@@ -82,7 +83,9 @@ public class Stock {
      */
     public void modifyGroup(String groupId, Clothing itemTemplate) throws InvalidIdException, GroupNotFoundException{
         ClothingGroup clothingGroup = getClothingGroupByGroupId(groupId);
-
+        
+        itemTemplate.recalculateGroupId();
+        
         int objectsToCreate = clothingGroup.getSize();
         clothingGroup.clearGroup();
         for(int i=0; i<objectsToCreate; i++){
@@ -114,7 +117,7 @@ public class Stock {
      * @throws InvalidIdException
      * @throws GroupNotFoundException 
      */
-    public ClothingGroup getClothingGroupByGroupId(String groupId) throws InvalidIdException, GroupNotFoundException{
+    private ClothingGroup getClothingGroupByGroupId(String groupId) throws InvalidIdException, GroupNotFoundException{
         if(groupId.contains("-"))
             throw new InvalidIdException("Id de grupo inválida"); 
         ClothingGroup clothingGroup = stock.get(groupId);
@@ -131,7 +134,7 @@ public class Stock {
      * @throws InvalidIdException
      * @throws GroupNotFoundException 
      */
-    public ClothingGroup getClothingGroupByFullId(String id) throws InvalidIdException, GroupNotFoundException{
+    private ClothingGroup getClothingGroupByFullId(String id) throws InvalidIdException, GroupNotFoundException{
         String[] idParts = id.split("-");
         if(idParts.length != 2)
             throw new InvalidIdException("La id no está completa");
