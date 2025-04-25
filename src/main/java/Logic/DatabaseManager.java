@@ -13,7 +13,8 @@ public class DatabaseManager {
                        INSERT INTO "CLOTHING"("FULL_ID", "GROUP_ID", "INDIVIDUAL_ID", "CATEGORY", "PRICE", "QUANTITY", "SIZE", 
                                             "MATERIAL", "COLOR", "DESCRIPTION", "SEASON", "GENDER")
                        VALUES(?,?,?,?,?,?,?,?,?,?,?, CAST(? AS "GENDER"))
-                       """;
+                       ON CONFLICT DO NOTHING
+                       """;  // Use "ON CONFLICT DO NOTHING" to skip insertions when values already exist 
         
         try(Connection conn = ConnectionPool.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
