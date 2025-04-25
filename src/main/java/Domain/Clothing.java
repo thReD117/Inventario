@@ -77,7 +77,7 @@ public abstract class Clothing implements Comparable<Clothing>{
         this.groupId = generateGroupId();
     }
     protected String generateGroupId(){
-        String rawData = size+material+color+description+price+quantity+season+gender+category.getCategory();
+        String rawData = size+material+color+description+price+quantity+season+gender+category.getDisplayName();
         return hashString(rawData, 12).toUpperCase();
     }
     
@@ -127,7 +127,7 @@ public abstract class Clothing implements Comparable<Clothing>{
     public String toString(){
         return String.format("%1$s | %2$s | %3$s | %4$s | %5$s | %6$s",
                 id,
-                category.getCategory(),
+                category.getDisplayName(),
                 gender,
                 color,
                 size,
