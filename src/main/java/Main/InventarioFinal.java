@@ -17,14 +17,14 @@ public class InventarioFinal {
         String groupTestId2 = "176CD6B4ED07";
         
         Stock stock = new Stock();
-        stock.add(new Superior("Mediana", "Algodon", "Negro", " ", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Lower("Grande", "Mezclilla", "Azul", " ", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
-        stock.add(new Superior("Mediana", "Algodon", "Negro", " ", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Superior("Mediana", "Algodon", "Negro", " ", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Superior("Mediana", "Algodon", "Roja", " ", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Accessories("6", "Oro", "Dorado", " ", "Anillo sdjls", 700f, 1, Season.AUTUMN, Gender.UNISEX, CategoryAcc.RINGS));
-        stock.add(new Lower("Grande", "Mezclilla", "Azul", " ", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
-        stock.add(new Lower("Grande", "Mezclilla", "Azul", " ", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
+        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
+        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Superior("Mediana", "Algodon", "Roja", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Accessories("6", "Oro", "Dorado", "Anillo sdjls", 700f, 1, Season.AUTUMN, Gender.UNISEX, CategoryAcc.RINGS));
+        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
+        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
         
         stock.listFullStock().forEach(System.out::println);
         

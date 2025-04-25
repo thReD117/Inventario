@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public abstract class Clothing implements Comparable<Clothing>{
-    protected String size, material, color, description, typeCategory;
+    protected String size, material, color, description;
     protected float price;
     protected int quantity;
     protected Season season;
@@ -18,12 +18,11 @@ public abstract class Clothing implements Comparable<Clothing>{
     protected String individualId; // Generada por su numero de item en ser añadido al stock
 
     // Constructor general para todas las clases hijas
-    public Clothing(String size, String material, String color, String description, String type_category, float price, int quantity, Season season, Gender gender, CategoryEnumerable category) {
+    public Clothing(String size, String material, String color, String description, float price, int quantity, Season season, Gender gender, CategoryEnumerable category) {
         this.size=size;
         this.material=material;
         this.color=color;
         this.description=description;
-        this.typeCategory=type_category;
         this.price=price;
         this.quantity=quantity;
         this.season=season;
@@ -41,7 +40,6 @@ public abstract class Clothing implements Comparable<Clothing>{
         this.material=other.material;
         this.color=other.color;
         this.description=other.description;
-        this.typeCategory=other.typeCategory;
         this.price=other.price;
         this.quantity=other.quantity;
         this.season=other.season;
@@ -79,7 +77,7 @@ public abstract class Clothing implements Comparable<Clothing>{
         this.groupId = generateGroupId();
     }
     protected String generateGroupId(){
-        String rawData = size+material+color+description+price+quantity+season+gender+category.getCategory()+typeCategory;
+        String rawData = size+material+color+description+price+quantity+season+gender+category.getCategory();
         return hashString(rawData, 12).toUpperCase();
     }
     
@@ -116,9 +114,6 @@ public abstract class Clothing implements Comparable<Clothing>{
     public int getQuantity() {return quantity;}
     public void setQuantity(int amount) {this.quantity = amount;}
 
-    public String getTypeCategory() {return typeCategory;}
-    public void setTypeCategory(String typeCategory) {this.typeCategory = typeCategory;}
-
     public CategoryEnumerable getCategory() {return category;}
     public void setCategory(CategoryEnumerable category) {this.category = category;} 
     
@@ -136,8 +131,7 @@ public abstract class Clothing implements Comparable<Clothing>{
                 gender,
                 color,
                 size,
-                season,
-                typeCategory
+                season
                 );        
     }
 }
