@@ -1,7 +1,9 @@
 package Testing;
 
-import Enums.CategoryEnumerable;
-import Enums.CategorySup;
+import Domain.*;
+import Enums.*;
+import Logic.DatabaseManager;
+import Logic.Stock;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,19 +13,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Database {
-    private static final String url = "jdbc:postgresql://db.zjtaizpyifuycbatgkao.supabase.co:5432/postgres";
-    private static final String usr = "postgres";
-    private static final String pwd = "SWhN9NJaHsYrtMtO";
-    
     public static void main(String[] args) {
 //        createNewTable();
 //        insertIntoClothing("6203A11A6403", "00001", CategorySup.SHIRTS);
 //        insertIntoClothing("6203A11ADF11", "00001", CategorySup.BLOUSES);
 //        
+//        
+//        selectAllFromClothing().forEach(System.out::println);
+
+        Stock stock = new Stock();
+        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
+        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Superior("Mediana", "Algodon", "Roja", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
+        stock.add(new Accessories("6", "Oro", "Dorado", "Anillo sdjls", 700f, 1, Season.AUTUMN, Gender.UNISEX, CategoryAcc.RINGS));
+        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
+        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
         
-        selectAllFromClothing().forEach(System.out::println);
+        
+        stock.listFullStock().forEach(DatabaseManager::insertItem);
     }
     
+    /*
     public static void createNewTable(){
         // SQL query
         String query = """
@@ -59,7 +71,7 @@ public class Database {
             // Replace variables into query
             prepSt.setString(1, groupId);
             prepSt.setString(2, singularId);
-            prepSt.setString(3, category.getCategory());
+            prepSt.setString(3, category.getDisplayName());
             
             prepSt.execute();
             
@@ -93,4 +105,5 @@ public class Database {
         }
         return rows;
     }
+*/
 }
