@@ -1,4 +1,4 @@
-package Ropa;
+package Domain;
 import Enums.*;
 public class Accessories extends Clothing{
     public Accessories(String size, String material, String color, String description, float price, int quantity, Season season, Gender gender, CategoryAcc category) {

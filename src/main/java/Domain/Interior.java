@@ -1,4 +1,4 @@
-package Ropa;
+package Domain;
 import Enums.*;
 public class Interior extends Clothing{
     public Interior(String size, String material, String color, String description, float price, int quantity, Season season, Gender gender, CategoryInte category) {

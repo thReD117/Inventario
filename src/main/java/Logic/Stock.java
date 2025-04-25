@@ -1,7 +1,7 @@
-package Main;
+package Logic;
 
 import Exceptions.*;
-import Ropa.Clothing;
+import Domain.Clothing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
