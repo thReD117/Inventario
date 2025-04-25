@@ -2,6 +2,9 @@ package Testing;
 
 import Domain.*;
 import Enums.*;
+import Exceptions.GroupNotFoundException;
+import Exceptions.InvalidIdException;
+import Exceptions.ItemNotFoundException;
 import Logic.DatabaseManager;
 import Logic.Stock;
 import java.sql.Connection;
@@ -11,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
     public static void main(String[] args) {
@@ -22,17 +27,8 @@ public class Database {
 //        selectAllFromClothing().forEach(System.out::println);
 
         Stock stock = new Stock();
-        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
-        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Superior("Mediana", "Algodon", "Negro", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Superior("Mediana", "Algodon", "Roja", "Camisa de cuadros", 300f, 1, Season.AUTUMN, Gender.MEN, CategorySup.SHIRTS));
-        stock.add(new Accessories("6", "Oro", "Dorado", "Anillo sdjls", 700f, 1, Season.AUTUMN, Gender.UNISEX, CategoryAcc.RINGS));
-        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
-        stock.add(new Lower("Grande", "Mezclilla", "Azul", "Pantalón de Mezclilla", 350f, 1, Season.SPRING, Gender.WOMEN, CategoryLow.JEANS));
-        
-        
-        stock.listFullStock().forEach(DatabaseManager::insertItem);
+        stock.add(new Accessories("10", "Oro", "Dorado", "Anillo de 14K", 5000, 3, Season.NA, Gender.WOMEN, CategoryAcc.RINGS));
+        stock.add(new Lower("M", "Algodón", "Negro", "Falda de tablas", 250, 2, Season.AUTUMN, Gender.WOMEN, CategoryLow.SKIRTS));    
     }
     
     /*

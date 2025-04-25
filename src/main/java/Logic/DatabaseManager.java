@@ -37,4 +37,53 @@ public class DatabaseManager {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void clearGroup(String groupId){
+        String query = """
+                       UPDATE "CLOTHING"
+                       SET "QUANTITY"=0
+                       WHERE "GROUP_ID"=?
+                       """;
+        try(Connection conn = ConnectionPool.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            
+            pstmt.setString(1, groupId);
+            
+            pstmt.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Does not actually delete, sets the quantity as 0 to mantain the group's persistentId right
+     * @param id 
+     */
+    public static void removeClothingStockById(String id){
+        String query = """
+                       UPDATE "CLOTHING"
+                       SET "QUANTITY"=0
+                       WHERE "FULL_ID"=?
+                       """;
+        try(Connection conn = ConnectionPool.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            
+            pstmt.setString(1, id);
+            
+            pstmt.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Because Stock's modifyItem method first deletes the old item and then adds the new one, it is unnecesary to
+     * actually write this method's implementation. Either way I'm leaving it here as a reminder that it was not 
+     * implemented by itself but as a side effect of the other methods
+     */
+    
+    /*
+    private static void modifyItem(){}
+    private static void modifyGroup(){}
+    */
 }

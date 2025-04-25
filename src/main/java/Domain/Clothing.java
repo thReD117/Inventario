@@ -18,7 +18,8 @@ public abstract class Clothing implements Comparable<Clothing>{
     protected String individualId; // Generada por su numero de item en ser añadido al stock
 
     // Constructor general para todas las clases hijas
-    public Clothing(String size, String material, String color, String description, float price, int quantity, Season season, Gender gender, CategoryEnumerable category) {
+    public Clothing(String size, String material, String color, String description, float price, 
+            int quantity, Season season, Gender gender, CategoryEnumerable category) {
         this.size=size;
         this.material=material;
         this.color=color;

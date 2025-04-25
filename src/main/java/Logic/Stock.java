@@ -21,7 +21,14 @@ public class Stock {
      */
     public void add(Clothing clothing){
         stock.putIfAbsent(clothing.getGroupId(), new ClothingGroup());
-        stock.get(clothing.getGroupId()).add(clothing);
+        
+        // Check to add as many times the clothing as its quantity field
+        int quantity = clothing.getQuantity();
+        clothing.setQuantity(1);
+        for(int i=0; i<quantity; i++){
+            stock.get(clothing.getGroupId()).add(clothing);
+            DatabaseManager.insertItem(clothing);
+        }
     }
     
     /**
@@ -55,6 +62,7 @@ public class Stock {
     public void clearGroupById(String groupId) throws InvalidIdException, GroupNotFoundException{
         ClothingGroup clothingGroup = getClothingGroupByGroupId(groupId);
         clothingGroup.clearGroup();
+        DatabaseManager.clearGroup(groupId);
     }
     
     
@@ -88,6 +96,8 @@ public class Stock {
         
         int objectsToCreate = clothingGroup.getSize();
         clothingGroup.clearGroup();
+        DatabaseManager.clearGroup(groupId);
+                
         for(int i=0; i<objectsToCreate; i++){
             add(itemTemplate.clone());
         }
@@ -108,6 +118,8 @@ public class Stock {
         
         if(!clothingGroup.removeById(id.split("-")[1]))
             throw new ItemNotFoundException("Prenda con ID " + id + " no encontrada.");
+        
+        DatabaseManager.removeClothingStockById(id);
     }
      
     /**
