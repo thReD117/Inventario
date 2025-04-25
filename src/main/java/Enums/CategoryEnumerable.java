@@ -1,4 +1,5 @@
 package Enums;
 public interface CategoryEnumerable {
-    String getCategory();
+    String getEnumName();
+    String getDisplayName();
 }

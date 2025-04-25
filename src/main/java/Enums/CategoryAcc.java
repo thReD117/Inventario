@@ -11,13 +11,18 @@ public enum CategoryAcc implements CategoryEnumerable{
     BELTS("Cinturon"),
     GLASSES("Gafas");
     
-    private String displayName;
+    private final String displayName;
     CategoryAcc(String displayName){
         this.displayName = displayName;
     }
     
     @Override
-    public String getCategory(){
+    public String getDisplayName(){
         return displayName;
+    }
+
+    @Override
+    public String getEnumName() {
+        return this.name();
     }
 }

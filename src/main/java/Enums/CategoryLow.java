@@ -22,7 +22,12 @@ public enum CategoryLow implements CategoryEnumerable{
     }
 
     @Override
-    public String getCategory() {
+    public String getDisplayName() {
         return displayName;
+    }
+
+    @Override
+    public String getEnumName() {
+        return name();
     }
 }
