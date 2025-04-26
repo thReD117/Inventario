@@ -3,6 +3,7 @@ package Logic;
 import Domain.Clothing;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -86,4 +87,19 @@ public class DatabaseManager {
     private static void modifyItem(){}
     private static void modifyGroup(){}
     */
+    public static void SelectAllClothing(){
+        String query = """
+                       SELECT * FROM "CLOTHING"
+                       """;
+        try(Connection conn = ConnectionPool.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Stock ST = new Stock();
+                
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
