@@ -111,25 +111,25 @@ public class DatabaseManager {
                 String DESCRIPTION = rs.getString("DESCRIPTION");
                 Season SEASON = Season.valueOf(rs.getString("SEASON"));
                 Gender GENDER = Gender.valueOf(rs.getString("GENDER"));
-                String groupPrefix = FID.substring(0, 3);
-                switch (groupPrefix) {
-                    case "LOW" -> {
+                String CATEGORY_TYPE = rs.getString("CLOTHING_TYPE");
+                switch (CATEGORY_TYPE) {
+                    case "LOWER" -> {
                         CategoryLow category = CategoryLow.valueOf(CATEGORY);
                         clothing = new Lower(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                     }
-                    case "SUP" -> {
+                    case "SUPERIOR" -> {
                         CategorySup category = CategorySup.valueOf(CATEGORY);
                         clothing = new Superior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                     }
-                    case "INT" -> {
+                    case "INTERIOR" -> {
                         CategoryInte category = CategoryInte.valueOf(CATEGORY);
                         clothing = new Interior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                     }
-                    case "ACC" -> {
+                    case "ACCESORIES" -> {
                         CategoryAcc category = CategoryAcc.valueOf(CATEGORY);
                         clothing = new Accessories(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                     }
-                    default -> Logger.getLogger(DatabaseManager.class.getName()).log(Level.WARNING, "Unknown group prefix: " + groupPrefix);
+                    default -> Logger.getLogger(DatabaseManager.class.getName()).log(Level.WARNING, "Unknown group prefix: ");
                 }
                 if (clothing != null) {
                     ST.add(clothing);
@@ -139,10 +139,10 @@ public class DatabaseManager {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public Clothing SelectByID(String Full_Id){
+    public static Clothing SelectByID(String Full_Id){
         String query ="""
                       SELECT * FROM "CLOTHING"
-                      WHERE "FULL_ID = ?"
+                      WHERE "FULL_ID" = ?
                       """;
         try(Connection conn = ConnectionPool.getConnection()){
             Clothing clothing = null;
@@ -160,20 +160,21 @@ public class DatabaseManager {
             String DESCRIPTION = rs.getString("DESCRIPTION");
             Season SEASON = Season.valueOf(rs.getString("SEASON"));
             Gender GENDER = Gender.valueOf(rs.getString("GENDER"));
-            switch(Full_Id.substring(0,3)){
-                case "LOW" ->{
+            String CATEGORY_TYPE = rs.getString("CLOTHING_TYPE");
+            switch(CATEGORY_TYPE){
+                case "LOWER" ->{
                     CategoryLow category = CategoryLow.valueOf(CATEGORY);
                     clothing = new Lower(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                 }
-                case "SUP"->{
+                case "SUPERIOR"->{
                     CategorySup category = CategorySup.valueOf(CATEGORY);
                     clothing = new Superior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                 }
-                case "INT"->{
+                case "INTERIOR"->{
                     CategoryInte category = CategoryInte.valueOf(CATEGORY);
                     clothing = new Interior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                 }
-                case "ACC"->{
+                case "ACCESSORIES"->{
                     CategoryAcc category = CategoryAcc.valueOf(CATEGORY);
                     clothing = new Accessories(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, category);
                 }
@@ -185,4 +186,113 @@ public class DatabaseManager {
         }
         return null;
     }
+    public static ArrayList<Clothing> SelectByGroupID(String groupId) {
+        ArrayList<Clothing> clothingaux = new ArrayList<>();
+        String query = """
+                       SELECT * FROM "CLOTHING"
+                       WHERE "GROUP_ID" = ?
+                       """;
+        try(Connection conn = ConnectionPool.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, groupId);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Clothing clothing = null;
+                String FID = rs.getString("FULL_ID");
+                String GID = rs.getString("GROUP_ID");
+                String IID = rs.getString("INDIVIDUAL_ID");
+                String CATEGORY = rs.getString("CATEGORY");
+                Float PRICE = rs.getFloat("PRICE");
+                int QUANTITY = rs.getInt("QUANTITY");
+                String SIZE = rs.getString("SIZE");
+                String MATERIAL = rs.getString("MATERIAL");
+                String COLOR = rs.getString("COLOR");
+                String DESCRIPTION = rs.getString("DESCRIPTION");
+                Season SEASON = Season.valueOf(rs.getString("SEASON"));
+                Gender GENDER = Gender.valueOf(rs.getString("GENDER"));
+                String CATEGORY_TYPE = rs.getString("CLOTHING_TYPE");
+                switch(CATEGORY_TYPE){
+                    case "LOWER"->{
+                        CategoryLow CL = CategoryLow.valueOf(CATEGORY);
+                        clothing = new Lower(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CL);
+                        clothingaux.add(clothing);
+                    }
+                    case "SUPERIOR"->{
+                        CategorySup CS = CategorySup.valueOf(CATEGORY);
+                        clothing = new Superior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CS);
+                        clothingaux.add(clothing);
+                    }
+                    case "INTERIOR"->{
+                        CategoryInte CI = CategoryInte.valueOf(CATEGORY);
+                        clothing = new Interior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CI);
+                        clothingaux.add(clothing);
+                    }
+                    case "ACCESSORIES"->{
+                        CategoryAcc CA = CategoryAcc.valueOf(CATEGORY);
+                        clothing = new Accessories(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CA);
+                        clothingaux.add(clothing);
+                    }
+                }
+            }
+        }
+        catch(SQLException ex){
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return clothingaux;
+    }
+    public static ArrayList<Clothing> SelectByCategory (String CATEGORY1){
+        ArrayList<Clothing> claux = new ArrayList<>();
+        String query = """
+                       SELECT * FROM "CLOTHING"
+                       WHERE "CATEGORY" = ?
+                       """;
+        try(Connection conn = ConnectionPool.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, CATEGORY1);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Clothing clothing = null;
+                String FID = rs.getString("FULL_ID");
+                String GID = rs.getString("GROUP_ID");
+                String IID = rs.getString("INDIVIDUAL_ID");
+                String CATEGORY = rs.getString("CATEGORY");
+                Float PRICE = rs.getFloat("PRICE");
+                int QUANTITY = rs.getInt("QUANTITY");
+                String SIZE = rs.getString("SIZE");
+                String MATERIAL = rs.getString("MATERIAL");
+                String COLOR = rs.getString("COLOR");
+                String DESCRIPTION = rs.getString("DESCRIPTION");
+                Season SEASON = Season.valueOf(rs.getString("SEASON"));
+                Gender GENDER = Gender.valueOf(rs.getString("GENDER"));
+                String CATEGORY_TYPE = rs.getString("CLOTHING_TYPE");
+                switch(CATEGORY_TYPE){
+                    case "LOWER"->{
+                        CategoryLow CL = CategoryLow.valueOf(CATEGORY);
+                        clothing = new Lower(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CL);
+                        claux.add(clothing);
+                    }
+                    case "SUPERIOR"->{
+                        CategorySup CS = CategorySup.valueOf(CATEGORY);
+                        clothing = new Superior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CS);
+                        claux.add(clothing);
+                    }
+                    case "INTERIOR"->{
+                        CategoryInte CI = CategoryInte.valueOf(CATEGORY);
+                        clothing = new Interior(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CI);
+                        claux.add(clothing);
+                    }
+                    case "ACCESSORIES"->{
+                        CategoryAcc CA = CategoryAcc.valueOf(CATEGORY);
+                        clothing = new Accessories(SIZE, MATERIAL, COLOR, DESCRIPTION, PRICE, QUANTITY, SEASON, GENDER, CA);
+                        claux.add(clothing);
+                    }
+                }
+            }
+        }
+        catch(SQLException ex){
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return claux;
+    }
+    
 }
