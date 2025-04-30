@@ -156,4 +156,18 @@ public class Stock {
         
         return clothingGroup;
     }
+    
+    
+    public void loadFromDB(){
+        DatabaseManager.SelectAllClothing().forEach(clothing -> {
+            stock.putIfAbsent(clothing.getGroupId(), new ClothingGroup());
+
+            // Check to add as many times the clothing as its quantity field
+            int quantity = clothing.getQuantity();
+            clothing.setQuantity(1);
+            for(int i=0; i<quantity; i++){
+                stock.get(clothing.getGroupId()).add(clothing);
+            }
+        });
+    }
 }

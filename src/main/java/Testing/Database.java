@@ -27,8 +27,11 @@ public class Database {
 //        selectAllFromClothing().forEach(System.out::println);
 
         Stock stock = new Stock();
-        stock.add(new Accessories("10", "Oro", "Dorado", "Anillo de 14K", 5000, 3, Season.NA, Gender.WOMEN, CategoryAcc.RINGS));
-        stock.add(new Lower("M", "Algodón", "Negro", "Falda de tablas", 250, 2, Season.AUTUMN, Gender.WOMEN, CategoryLow.SKIRTS));    
+//        stock.add(new Superior("M", "Algodon", "Rojo", "Sueter", 300, 1, Season.WINTER, Gender.UNISEX, CategorySup.SWEATERS));
+//  
+//        
+        stock.loadFromDB();
+        stock.listFullStock().forEach(System.out::println);
     }
     
     /*
