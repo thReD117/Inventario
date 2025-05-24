@@ -93,6 +93,7 @@ public class DatabaseManager {
      * Because Stock's modifyItem method first deletes the old item and then adds the new one, it is unnecesary to
      * actually write this method's implementation. Either way I'm leaving it here as a reminder that it was not 
      * implemented by itself but as a side effect of the other methods
+     * @return 
      */
     
     /*

@@ -3,7 +3,10 @@ package Logic;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectionPool {
     private static HikariDataSource dataSource;
@@ -12,8 +15,8 @@ public class ConnectionPool {
     static {
         HikariConfig config = new HikariConfig(); // Config parameters for connection pool
         config.setJdbcUrl("jdbc:postgresql://db.zjtaizpyifuycbatgkao.supabase.co:5432/postgres");
-        config.setUsername("general_user");
-        config.setPassword("lHa8iVZ6HiUmTt");
+        config.setUsername("public_user");
+        config.setPassword("mematosinosirve");
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(2);
         config.setIdleTimeout(30000);
