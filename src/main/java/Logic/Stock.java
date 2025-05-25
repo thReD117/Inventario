@@ -160,14 +160,15 @@ public class Stock {
     
     public void loadFromDB(){
         DatabaseManager.SelectAllClothing().forEach(clothing -> {
-            stock.putIfAbsent(clothing.getGroupId(), new ClothingGroup());
-
+            ClothingGroup group =  stock.getOrDefault(clothing.getGroupId(), new ClothingGroup());
+            stock.putIfAbsent(clothing.getGroupId(), group);
+            
+            int quantity = Math.max(clothing.getQuantity(), 1);
             // Check to add as many times the clothing as its quantity field
-            int quantity = clothing.getQuantity();
-            clothing.setQuantity(1);
-            for(int i=0; i<quantity; i++){
-                stock.get(clothing.getGroupId()).add(clothing);
+            for(int i=0; i < quantity; i++){
+                group.addFromDB(clothing);
             }
+            group.fixPersistentCounter();
         });
     }
 }
