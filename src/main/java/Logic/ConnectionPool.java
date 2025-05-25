@@ -14,8 +14,8 @@ public class ConnectionPool {
     // Static initializer block executes once when the class is loaded 
     static {
         HikariConfig config = new HikariConfig(); // Config parameters for connection pool
-        config.setJdbcUrl("jdbc:postgresql://db.zjtaizpyifuycbatgkao.supabase.co:5432/postgres");
-        config.setUsername("public_user");
+        config.setJdbcUrl("jdbc:postgresql://aws-0-us-east-1.pooler.supabase.com:5432/postgres");
+        config.setUsername("public_user.zjtaizpyifuycbatgkao");
         config.setPassword("mematosinosirve");
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(2);
