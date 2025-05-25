@@ -71,8 +71,13 @@ public abstract class Clothing implements Comparable<Clothing>{
     public void setDescription(String description) {this.description = description;}
 
     public String getId() {return id;}
-    public void setId(String id) {this.id = id;}
-
+    public void setId(String id) {
+        this.id = id;
+        String[] ids = id.split("-");
+        this.groupId = ids[0];
+        this.individualId = ids[1];
+    }
+    
     public String getGroupId() {return groupId;}
     public void recalculateGroupId(){
         this.groupId = generateGroupId();
@@ -126,13 +131,14 @@ public abstract class Clothing implements Comparable<Clothing>{
     
     @Override
     public String toString(){
-        return String.format("%1$s | %2$s | %3$s | %4$s | %5$s | %6$s",
+        return String.format("%1$s | %2$s | %3$s | %4$s | %5$s | %6$s | %7$s ",
                 id,
                 category.getDisplayName(),
                 gender,
                 color,
                 size,
-                season
+                season,
+                quantity==0 ? "No stock" : "In stock"
                 );        
     }
 }

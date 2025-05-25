@@ -26,6 +26,22 @@ public class ClothingGroup {
     }
     
     /**
+     * Cuando se agrega desde la base de datos, se debe de respetar el orden que ya tienen, es decir, respetar sus id
+     * y no recalcularlas
+     * @param clothing 
+     */
+    public void addFromDB(Clothing clothing){
+        clothingGroup.put(clothing.getIndividualId(), clothing);
+    }
+
+    public void fixPersistentCounter(){
+        persistentCounter = clothingGroup.keySet().stream()
+                .mapToInt(Integer::parseInt)
+                .max()
+                .orElse(0);
+    }
+    
+    /**
      * @return Retorna un arraylist con todas las prendas que existen en el grupo
      */
     public ArrayList<Clothing> getClothingInGroup(){

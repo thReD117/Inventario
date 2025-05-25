@@ -181,8 +181,6 @@ public class DatabaseManager {
         Clothing clothing = null;
         try {
             String FID = rs.getString("FULL_ID");
-            String GID = rs.getString("GROUP_ID");
-            String IID = rs.getString("INDIVIDUAL_ID");
             String CATEGORY = rs.getString("CATEGORY");
             Float PRICE = rs.getFloat("PRICE");
             int QUANTITY = rs.getInt("QUANTITY");
@@ -212,6 +210,9 @@ public class DatabaseManager {
                 }
                 default -> Logger.getLogger(DatabaseManager.class.getName()).log(Level.WARNING, "Unknown group prefix: ");
             }
+            if(clothing != null)
+                clothing.setId(FID);
+            
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }
