@@ -2,6 +2,7 @@ package servlets;
 
 import Domain.Clothing;
 import Logic.Stock;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -9,6 +10,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @WebServlet(name = "ShowClothingsServlet", urlPatterns = {"/ShowClothingsServlet"})
 public class ShowClothingsServlet extends HttpServlet {
@@ -17,30 +22,34 @@ public class ShowClothingsServlet extends HttpServlet {
         // Obtiene el stock y genera el arraylist para poder recorrerlo
         Stock stock = (Stock) getServletContext().getAttribute("stock");
         
-        // Genera las filas del html que le serán pasadas a JS para escribirlas
-        response.setContentType("text/html;charset=UTF-8");
+        // Crea una lista de mapas para convertir los datos del stock a JSON y que JS pueda insertarlos en el html
+        response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String html = "";
-            for(Clothing clothing : stock.listFullStock()){ 
-                html += "<tr>"+String.format("""
-                                            <td> %1$s </td>
-                                            <td> %2$s </td>
-                                            <td> %3$s </td>
-                                            <td> %4$s </td>
-                                            <td> %5$s </td>
-                                            <td> %6$s </td>
-                                            <td> %7$s </td>
-                                            """,
-                                        clothing.getId(),
-                                        clothing.getCategory().getDisplayName(),
-                                        clothing.getGender(),
-                                        clothing.getColor(),
-                                        clothing.getSize(),
-                                        clothing.getSeason(),
-                                        clothing.getQuantity()==0 ? "No stock" : "In stock"
-                                        ) + "</tr>";
+            
+            // Crea toda la información
+            List<Map<String, Object>> data = new ArrayList<>();
+            for(Clothing clothing : stock.listFullStock()){
+                HashMap<String, Object> item = new HashMap<>();
+                item.put("idCompleta", clothing.getId());
+                item.put("idIndividual", clothing.getIndividualId());
+                item.put("idGrupal", clothing.getGroupId());
+                item.put("tipo", clothing.getClass().getName().replace("Domain.", ""));
+                item.put("categoria", clothing.getCategory());
+                item.put("talla", clothing.getSize());
+                item.put("material", clothing.getMaterial());
+                item.put("color", clothing.getColor());
+                item.put("descripcion", clothing.getDescription());
+                item.put("precio", clothing.getPrice());
+                item.put("temporada", clothing.getSeason());
+                item.put("genero", clothing.getGender());
+                data.add(item);
             }
-            out.print(html);
+            
+            // Lo convierte a JSON
+            String json = new Gson().toJson(data);
+            
+            // Manda la información a JS
+            out.print(json);
         }
     }
 

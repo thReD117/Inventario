@@ -48,10 +48,7 @@
             <div class="modal-content">
                 <h3>Agregar Elemento</h3>
                 <form id="formularioAgregar">
-                    <label for="idIndividual">ID Individual:</label>
-                    <input type="number" id="idIndividual" required><br><br>
-                    <label for="idGrupal">ID Grupal:</label>
-                    <input type="number" id="idGrupal"><br><br>
+                    <label for="categoria">Categoría:</label>
                     <label for="tipo">Tipo:</label>
                     <input type="text" id="tipo"><br><br>
                     <label for="categoria">Categoría:</label>
@@ -125,26 +122,27 @@
                 botonCancelarBorrar.addEventListener('click', () => modalBorrar.style.display = "none");
                 window.addEventListener('click', (event) => { if (event.target == modalBorrar) modalBorrar.style.display = "none"; });
 
-                // Datos de la tabla 
-                let datosTabla = [
-                    { idIndividual: 1, idGrupal: 1, tipo: 'SUPERIOR', categoria: 'TSHIRT', talla: 'M', material: 'ALGODON', color: 'BLANCO', descripcion: 'CAMISETA DE MANGA CORTA', precio: '$20', temporada: 'VERANO', genero: 'UNISEX' },
-                    { idIndividual: 2, idGrupal: 2, tipo: 'INFERIOR', categoria: 'PANTALON', talla: 'L', material: 'MEZCLILLA', color: 'AZUL', descripcion: 'PANTALON DE MEZCLILLA RECTO', precio: '$45', temporada: 'OTOÑO', genero: 'HOMBRE' },
-                    { idIndividual: 3, idGrupal: 1, tipo: 'SUPERIOR', categoria: 'SUDADERA', talla: 'S', material: 'POLIESTER', color: 'GRIS', descripcion: 'SUDADERA CON CAPUCHA', precio: '$35', temporada: 'INVIERNO', genero: 'UNISEX' },
-
-                ];
+                
                 const tablaBody = document.querySelector('.table-bordered tbody');
+                const fieldOrder = ["idCompleta", "idIndividual", "idGrupal", "tipo", "categoria", "talla", "material",
+                        "color", "descripcion", "precio", "temporada", "genero"];
 
                 function renderizarTabla() {
                     tablaBody.innerHTML = ''; 
-                    datosTabla.forEach(item => {
-                        const nuevaFila = tablaBody.insertRow();
-                        for (const key in item) {
-                            if (item.hasOwnProperty(key)) {
-                                const nuevaCelda = nuevaFila.insertCell();
-                                nuevaCelda.textContent = item[key];
-                            }
-                        }
-                    });
+                    
+                    // Recupera los datos de la tabla mediante el servlet
+                    fetch('ShowClothingsServlet')
+                            .then(response => response.json())
+                            .then(datosTabla => {
+                                datosTabla.forEach(item => {
+                                    const nuevaFila = tablaBody.insertRow();
+                                    fieldOrder.forEach(field => {
+                                       const nuevaCelda = nuevaFila.insertCell();
+                                       nuevaCelda.textContent = item[field];
+                                    });
+                                });
+                            })
+                            .catch(error => console.error('Error loading data:', error));
                 }
 
                 renderizarTabla(); // Renderizar la tabla inicial
@@ -152,8 +150,6 @@
                 // Funcionalidad para agregar un elemento
                 botonAgregarModal.addEventListener('click', () => {
                     const nuevoItem = {
-                        idIndividual: parseInt(document.getElementById('idIndividual').value),
-                        idGrupal: parseInt(document.getElementById('idGrupal').value) || null,
                         tipo: document.getElementById('tipo').value,
                         categoria: document.getElementById('categoria').value,
                         talla: document.getElementById('talla').value,
@@ -191,6 +187,7 @@
             <table class="table-bordered table-striped table-condensed table-fixed">
                 <thead>
                     <tr>
+                        <th>ID COMPLETA</th>
                         <th>ID INDIVIDUAL</th>
                         <th>ID DE GRUPAL</th>
                         <th>TIPO</th>
@@ -205,7 +202,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>        
