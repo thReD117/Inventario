@@ -1,0 +1,379 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    background-image: url(city.jpg);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+}
+.contenedor{
+    display: flex;
+    height: 730px; 
+    width: 1350px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) ;
+    backdrop-filter: blur(10px);
+    margin: 50px; 
+    text-align: center;
+    flex-wrap: wrap; 
+    backdrop-filter: blur(10px);
+}
+.filtrados{
+    background-color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 90px;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 20px; 
+    border-top-left-radius: 5px; 
+    border-top-right-radius: 5px;
+}
+.filtrado-interno { 
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px; 
+    padding: 10px 20px; 
+    height: 85%;
+    width: 42%;
+    margin-left: -30px;
+    align-items: center;
+}
+.filtrados h3{
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-left: -15px; 
+    font-weight: bold;
+    margin-right: 20px; 
+}
+.boton1{
+    background-color: rgba(0, 0, 255, 0.7);
+    border: none;
+    font-weight: 1000;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 12px 80px; 
+    border-radius: 5px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.5s;
+    margin-right: 30px;
+    
+}
+.boton1:hover {
+    background-color: #e0e0e0;
+    color: black; 
+}
+.boton2{
+    background-color: rgba(0, 0, 255, 0.7);
+    font-weight: 1000;
+    border: none;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 12px 80px; 
+    border-radius: 5px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.5s;
+
+}
+.boton2:hover {
+    background-color: #e0e0e0;
+    color: black; 
+}
+.agregar { 
+    background-color: rgba(0, 128, 0, 0.8); 
+    border: none;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 17px 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    margin-right: -10px;
+}
+.borrar {
+    background-color: rgba(255, 0, 0, 0.8); 
+    border: none;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 17px 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    margin-left: -10px; 
+    margin-right: 45px;
+}
+.regresar {
+    background-color: rgba(255, 0, 0, 0.8); 
+    border: none;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 17px 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    margin-right: 5px;
+    margin-left: 10px; 
+}
+
+.agregar:hover, .borrar:hover, .regresar:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+.agregar i, .borrar i, .regresar i{
+    font-size: 25px;
+}
+.form {
+    padding: 15px 15px; 
+    width: 100%; 
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    align-items:center; 
+    justify-content: space-around; 
+}
+
+.formato {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; 
+    margin-right: 10px; 
+}
+
+.box {
+    flex-grow: 1;
+    border-color: black;
+    border-style: solid;
+    border-width: 0px 0px 0px 5px; 
+    padding: 13px 15px; 
+    font-size: 18px; 
+    background-color: white;
+    border-radius: 5px 0 0 5px;
+    
+}
+
+.buscar {
+    background-color: rgba(0, 0, 255, 0.8);
+    font-weight: 1000px;
+    border: none;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 13px 35px; 
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    
+}
+
+.buscar:hover {
+    background-color: #e0e0e0;
+    color: black; 
+}
+
+.buscar i {
+    font-size: 25px; 
+}
+
+.imprimir {
+    margin-left: 10px; 
+    background-color: rgba(0, 0, 255, 0.8);
+    border: none;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 13px 35px; 
+    border-radius: 5px ;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    display: flex; 
+    align-items: center;
+    gap: 5px;
+}
+
+.imprimir:hover {
+    background-color: #e0e0e0;
+    color: black; 
+}
+
+.imprimir i {
+    font-size: 25px;
+}
+.tabla{
+    height: 77%;
+    width: 1350px;
+    background-color: rgba(255, 255, 255, 0.2);
+    overflow: auto; 
+    border-bottom-left-radius: 5px; 
+    border-bottom-right-radius: 5px;
+}
+table {
+    color:aliceblue;
+    font-size: 15px;
+    table-layout: auto;     
+    align-items: baseline;
+    align-content: baseline;
+    width: 1310px;
+    height: 100%;
+
+}
+th {
+    padding: 25px 12px; 
+    background-color: #1414b8;
+    position:sticky; 
+    font-size: 18px;
+    border-bottom: 1px solid rgba(0, 0, 255, 0.7);
+    border-top: 1px solid rgba(0, 0, 255, 0.7);
+    border-left: 1px solid rgba(0, 0, 255, 0.7);
+    border-right: 1px solid rgba(0, 0, 255, 0.7);
+    color: white;
+    top:0%;
+}
+td{
+    font-weight: 500;
+    padding: 15px 12px; 
+    margin-bottom: 20px;
+    font-size: 15px ;
+    cursor: pointer;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.4); 
+}
+tbody tr:hover{
+    background:  rgba(255, 255, 255, 0.7);
+    transition: background-color 0.2s;
+}
+.contenedor table{
+    align-items: end;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.logo {
+    background-image: url(logo.jpg);
+    background-size: cover; 
+    position:static;
+    width: auto; 
+    height: auto; 
+    padding: 36px 36px;
+    margin-left: 22px;
+    border-radius: 42px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    color: #1414b8; 
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.modal-content p {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.9);
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modal-buttons button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.5s, color 0.5s;
+}
+#botonImprimirModal{
+    background-color: rgba(0, 128, 0, 0.8); 
+    color:#e0e0e0;
+}
+#botonCancelarModal{
+    background-color: rgba(255, 0, 0, 0.8);
+    color: #e0e0e0;
+}
+#botonImprimirModal:hover, #botonCancelarModal:hover{
+    background-color: black;
+    color: #e0e0e0;
+}
+
+#botonAgregarModal, #botonBorrarModal {
+    background-color: #1414b8; 
+    color: white;
+}
+
+#botonCancelarAgregar, #botonCancelarBorrar {
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+}
+
+#botonAgregarModal:hover, #botonBorrarModal:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+#botonCancelarAgregar:hover, #botonCancelarBorrar:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+#formularioAgregar label {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: bold;
+}
+
+#formularioAgregar input[type=text],
+#formularioAgregar input[type=number] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+#idBorrar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}

@@ -1,121 +1,85 @@
 <!DOCTYPE html>
-<!-- 
-    Test HTML para probar todas las funciones de la aplicación
-    Los servlets deben de ser llamados a traves de funciones de JS (AJAX) para poder mostrar los cambios en la misma página
-    sin redirigir a otra
--->
-<html>
-    <head>
-        <script>
-            // Misma estructura para todas las funciones, usa el nombre del servlet en fetch
-            function addClothing() {
-                fetch('AddClothingServlet')
-                .then(response => response.text())
-                .then(data => { // Modifica el elemento que quieres mostrar la info obtenida por el server
-                    document.getElementById("result-add").innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+    <div class="contenedor">
+        
+        
+        <div class="logo">
+            </div>
+        <form class="form" id="loginForm">
+            <h2>Ingresar</h2>
+            <div class="inputs">
+                <input type="email" class="box" id="email" placeholder="Ingresa tu correo:">
+                <div id="emailError" class="error"></div>
+                <input type="password" class="box" id="password" placeholder="Ingresa tu contraseña:">
+                <div id="passwordError" class="error1"></div>
+                <button type="button" onclick="validarFormulario()">ENTRAR</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="Bienvenida1" class="bienvenida">
+        <div class="bienvenida-contenido">
+            <p>Bienvenido al inventario, presione ok para continuar</p>
+            <div class="modal-buttons">
+                <button id="botonOkBienvenida">OK</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function validarEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        function validarFormulario() {
+            const emailInput = document.getElementById('email');
+            const emailErrorDiv = document.getElementById('emailError');
+            const passwordInput = document.getElementById('password');
+            const passwordErrorDiv = document.getElementById('passwordError');
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const contrasenaCorrecta = "admin";
+            let formularioValido = true;
+            const Bienvenida1 = document.getElementById('Bienvenida1');
+            const botonOkBienvenida = document.getElementById('botonOkBienvenida');
+
+            emailErrorDiv.textContent = '';
+            passwordErrorDiv.textContent = '';
+
+            //validacion de correo
+            if (email === '') {
+                emailErrorDiv.textContent = 'Por favor, ingresa tu correo electrónico.';
+                formularioValido = false;
+            } else if (!validarEmail(email)) {
+                emailErrorDiv.textContent = 'El formato del correo electrónico no es válido.';
+                formularioValido = false;
+            }
+
+            // Validación de la contraseña
+            if (password === '') {
+                passwordErrorDiv.textContent = 'Por favor, ingresa tu contraseña.';
+                formularioValido = false;
+            } else if (password !== contrasenaCorrecta) {
+                passwordErrorDiv.textContent = 'Contraseña incorrecta.';
+                formularioValido = false;
+            }
+
+            if (formularioValido) {
+                Bienvenida1.style.display = "block"; 
+                botonOkBienvenida.addEventListener('click', function() {
+                    Bienvenida1.style.display = "none"; 
+                    window.location.href = "principal.html"; 
                 });
             }
-            
-            function showClothings() {
-                fetch('ShowClothingsServlet')
-                .then(response => response.text())
-                .then(data => { // Modifica el elemento que quieres mostrar la info obtenida por el server
-                    document.getElementById("result-show-table").innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            } 
-        </script>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <div> <!-- Añadir tiene un formulario sencillo y dummy data -->
-            <h1>Add</h1>
-            <form action="AddClothingServlet" method="get">
-                <input name="CATEGORY" list="category">
-                <datalist id="category">
-                    <option value="Superior">
-                    <option value="Lower">
-                    <option value="Interior">
-                    <option value="Accessorie">
-                </datalist>
-                <input name="CATEGORY_ENUM" list="category-enum">
-                <datalist id="category-enum">
-                    <option value="T_SHIRTS">
-                    <option value="SKIRTS">
-                    <option value="BOXERS">
-                    <option value="RINGS">
-                </datalist>
-                <input name="SIZE" type="text" placeholder="Tamaño">
-                <input name="MATERIAL" type="text" placeholder="Material">
-                <input name="COLOR" type="text" placeholder="Color">
-                <input name="DESCRIPTION" type="text" placeholder="Descripción">
-                <input name="PRICE" type="text" placeholder="Precio">
-                <input name="QUANTITY" type="text" placeholder="Cantidad">
-                <input name="SEASON" list="season">
-                <datalist id="season">
-                    <option value="Spring">
-                    <option value="Summer">
-                    <option value="Autumn">
-                    <option value="Winter">
-                </datalist>
-                <input name="GENDER" list="gender">
-                <datalist id="gender">
-                    <option value="Men">
-                    <option value="Women">
-                </datalist>
-                <input type="submit">
-            </form>
-            <p id="result-add"></p>
-        </div>
-        <div> <!-- Muestra algunas de las propiedades de la prenda en una tabla -->
-            <h1>Show on table</h1>
-            <button onclick="showClothings()">Mostrar prendas</button>
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Categoría</th>
-                    <th>Genero</th>
-                    <th>Color</th>
-                    <th>Tamaño</th>
-                    <th>Temporada</th>
-                    <th>Cantidad</th>
-                </tr>
-                <tbody id="result-show-table">
-                    <!-- Cuerpo añadido de forma dinamica --> 
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <h1>Remove clothings from group</h1>
-            <button onclick="showClothings()">Show clothings</button>
-            <p id="result-remove-in-group"></p>
-        </div>
-        <div>
-            <h1>Modify a clothing</h1>
-            <button onclick="showClothings()">Show clothings</button>
-            <p id="result-modify-item"></p>
-        </div>
-        <div>
-            <h1>Modify group</h1>
-            <button onclick="showClothings()">Show clothings</button>
-            <p id="result-modify-group"></p>
-        </div>
-        <div>
-            <h1>Search by id</h1>
-            <button onclick="showClothings()">Show clothings</button>
-            <p id="result-search"></p>
-        </div>
-        <div>
-            <h1>Remove by id</h1>
-            <button onclick="showClothings()">Show clothings</button>
-            <p id="result-remove-item"></p>
-        </div>
-        
-    </body>
-</html>
+        }
+    </script>
+</body>
+</html> 

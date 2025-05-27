@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styleP.css">
+</head>
+<body>
+    <div class="contenedor">
+        <div class="filtrados">
+            <div class="logo"></div>
+            <h3>FILTRAR POR:</h3>
+            <div class="filtrado-interno">
+                <button class="boton1">ID GRUPAL</button>
+                <button class="boton2">ID INDIVIDUAL</button>
+            </div>
+            <button class="agregar"><i class="fa-solid fa-plus"></i></button>
+            <button class="borrar"><i class="fa-solid fa-trash-can"></i></button>
+            <a href="index.html">
+                <button class="regresar">
+                    <i class="fa-solid fa-circle-left"></i>
+                </button>
+            </a>
+        </div>
+        <div class="form">
+            <div class="formato">
+                <input type="text" class="box" placeholder="Buscar prenda...">
+                <button class="buscar">
+                    <i class="fa-solid fa-magnifying-glass"></i> 
+                </button>
+                <button class="imprimir">
+                    <i class="fa-solid fa-print"></i> 
+                </button>
+            </div>
+        </div>
+        <div id="modalImprimir" class="modal">
+            <div class="modal-content">
+                <p>¿Desea imprimir todo el contenido?</p>
+                <div class="modal-buttons">
+                    <button id="botonImprimirModal">Imprimir</button>
+                    <button id="botonCancelarModal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <div id="modalAgregar" class="modal">
+            <div class="modal-content">
+                <h3>Agregar Elemento</h3>
+                <form id="formularioAgregar">
+                    <label for="idIndividual">ID Individual:</label>
+                    <input type="number" id="idIndividual" required><br><br>
+                    <label for="idGrupal">ID Grupal:</label>
+                    <input type="number" id="idGrupal"><br><br>
+                    <label for="tipo">Tipo:</label>
+                    <input type="text" id="tipo"><br><br>
+                    <label for="categoria">Categoría:</label>
+                    <input type="text" id="categoria"><br><br>
+                    <label for="talla">Talla:</label>
+                    <input type="text" id="talla"><br><br>
+                    <label for="material">Material:</label>
+                    <input type="text" id="material"><br><br>
+                    <label for="color">Color:</label>
+                    <input type="text" id="color"><br><br>
+                    <label for="descripcion">Descripción:</label>
+                    <input type="text" id="descripcion"><br><br>
+                    <label for="precio">Precio:</label>
+                    <input type="text" id="precio"><br><br>
+                    <label for="temporada">Temporada:</label>
+                    <input type="text" id="temporada"><br><br>
+                    <label for="genero">Género:</label>
+                    <input type="text" id="genero"><br><br>
+                    <div class="modal-buttons">
+                        <button type="button" id="botonAgregarModal">Agregar</button>
+                        <button type="button" id="botonCancelarAgregar">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="modalBorrar" class="modal">
+            <div class="modal-content">
+                <h3>Borrar Elemento</h3>
+                <p>Ingrese el ID INDIVIDUAL del elemento que desea borrar:</p>
+                <input type="number" id="idBorrar">
+                <div class="modal-buttons">
+                    <button type="button" id="botonBorrarModal">Borrar</button>
+                    <button type="button" id="botonCancelarBorrar">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Modal de Imprimir
+                const botonImprimirPrincipal = document.querySelector('.imprimir');
+                const modalImprimir = document.getElementById('modalImprimir');
+                const botonImprimirModal = document.getElementById('botonImprimirModal');
+                const botonCancelarModalImprimir = document.getElementById('botonCancelarModal');
+
+                botonImprimirPrincipal.addEventListener('click', () => modalImprimir.style.display = "block");
+                botonImprimirModal.addEventListener('click', () => { window.print(); modalImprimir.style.display = "none"; });
+                botonCancelarModalImprimir.addEventListener('click', () => modalImprimir.style.display = "none");
+                window.addEventListener('click', (event) => { if (event.target == modalImprimir) modalImprimir.style.display = "none"; });
+
+                // Modal de Agregar
+                const botonAgregarPrincipal = document.querySelector('.agregar');
+                const modalAgregar = document.getElementById('modalAgregar');
+                const botonAgregarModal = document.getElementById('botonAgregarModal');
+                const botonCancelarAgregar = document.getElementById('botonCancelarAgregar');
+                const formularioAgregar = document.getElementById('formularioAgregar');
+
+                botonAgregarPrincipal.addEventListener('click', () => modalAgregar.style.display = "block");
+                botonCancelarAgregar.addEventListener('click', () => modalAgregar.style.display = "none");
+                window.addEventListener('click', (event) => { if (event.target == modalAgregar) modalAgregar.style.display = "none"; });
+
+                // Modal de Borrar
+                const botonBorrarPrincipal = document.querySelector('.borrar');
+                const modalBorrar = document.getElementById('modalBorrar');
+                const botonBorrarModal = document.getElementById('botonBorrarModal');
+                const botonCancelarBorrar = document.getElementById('botonCancelarBorrar');
+                const inputIdBorrar = document.getElementById('idBorrar');
+
+                botonBorrarPrincipal.addEventListener('click', () => modalBorrar.style.display = "block");
+                botonCancelarBorrar.addEventListener('click', () => modalBorrar.style.display = "none");
+                window.addEventListener('click', (event) => { if (event.target == modalBorrar) modalBorrar.style.display = "none"; });
+
+                // Datos de la tabla 
+                let datosTabla = [
+                    { idIndividual: 1, idGrupal: 1, tipo: 'SUPERIOR', categoria: 'TSHIRT', talla: 'M', material: 'ALGODON', color: 'BLANCO', descripcion: 'CAMISETA DE MANGA CORTA', precio: '$20', temporada: 'VERANO', genero: 'UNISEX' },
+                    { idIndividual: 2, idGrupal: 2, tipo: 'INFERIOR', categoria: 'PANTALON', talla: 'L', material: 'MEZCLILLA', color: 'AZUL', descripcion: 'PANTALON DE MEZCLILLA RECTO', precio: '$45', temporada: 'OTOÑO', genero: 'HOMBRE' },
+                    { idIndividual: 3, idGrupal: 1, tipo: 'SUPERIOR', categoria: 'SUDADERA', talla: 'S', material: 'POLIESTER', color: 'GRIS', descripcion: 'SUDADERA CON CAPUCHA', precio: '$35', temporada: 'INVIERNO', genero: 'UNISEX' },
+
+                ];
+                const tablaBody = document.querySelector('.table-bordered tbody');
+
+                function renderizarTabla() {
+                    tablaBody.innerHTML = ''; 
+                    datosTabla.forEach(item => {
+                        const nuevaFila = tablaBody.insertRow();
+                        for (const key in item) {
+                            if (item.hasOwnProperty(key)) {
+                                const nuevaCelda = nuevaFila.insertCell();
+                                nuevaCelda.textContent = item[key];
+                            }
+                        }
+                    });
+                }
+
+                renderizarTabla(); // Renderizar la tabla inicial
+
+                // Funcionalidad para agregar un elemento
+                botonAgregarModal.addEventListener('click', () => {
+                    const nuevoItem = {
+                        idIndividual: parseInt(document.getElementById('idIndividual').value),
+                        idGrupal: parseInt(document.getElementById('idGrupal').value) || null,
+                        tipo: document.getElementById('tipo').value,
+                        categoria: document.getElementById('categoria').value,
+                        talla: document.getElementById('talla').value,
+                        material: document.getElementById('material').value,
+                        color: document.getElementById('color').value,
+                        descripcion: document.getElementById('descripcion').value,
+                        precio: document.getElementById('precio').value,
+                        temporada: document.getElementById('temporada').value,
+                        genero: document.getElementById('genero').value
+                    };
+
+                    datosTabla.push(nuevoItem);
+                    renderizarTabla();
+                    formularioAgregar.reset(); 
+                    modalAgregar.style.display = "none";
+                });
+
+                // Funcionalidad para borrar un elemento
+                botonBorrarModal.addEventListener('click', () => {
+                    const idABorrar = parseInt(inputIdBorrar.value);
+                    const indiceABorrar = datosTabla.findIndex(item => item.idIndividual === idABorrar);
+
+                    if (indiceABorrar !== -1) {
+                        datosTabla.splice(indiceABorrar, 1);
+                        renderizarTabla();
+                        inputIdBorrar.value = ''; 
+                        modalBorrar.style.display = "none";
+                    } else {
+                        alert(`No se encontró ningún elemento con ID Individual: ${idABorrar}`);
+                    }
+                });
+            });
+        </script>
+        <div class="tabla">
+            <table class="table-bordered table-striped table-condensed table-fixed">
+                <thead>
+                    <tr>
+                        <th>ID INDIVIDUAL</th>
+                        <th>ID DE GRUPAL</th>
+                        <th>TIPO</th>
+                        <th>CATEGORIA</th>
+                        <th>TALLA</th>
+                        <th>MATERIAL</th>
+                        <th>COLOR</th>
+                        <th>DESCRIPCION</th>
+                        <th>PRECIO</th>
+                        <th>TEMPORADA</th>
+                        <th>GENERO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+    </div>        
+</body>
