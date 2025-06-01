@@ -3,15 +3,22 @@ package servlets;
 import Domain.*;
 import Enums.*;
 import Logic.Stock;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "AddClothingServlet", urlPatterns = {"/AddClothingServlet"})
+@MultipartConfig
 public class AddClothingServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,16 +54,40 @@ public class AddClothingServlet extends HttpServlet {
         }
         
         
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             if(clothing == null){
-                out.print("No se añadió imbécil");
+                out.print("[]");
                 return;
             }
 
-            ((Stock) getServletContext().getAttribute("stock")).add(clothing);
+            Stock stock = ((Stock) getServletContext().getAttribute("stock"));
+            stock.add(clothing);
 
-            out.print("La prenda fue añadida");
+            List<Map<String, Object>> data = new ArrayList<>();
+            for(Clothing c : stock.listRecentlyAdded()){
+                HashMap<String, Object> item = new HashMap<>();
+                item.put("idCompleta", c.getId());
+                item.put("idIndividual", c.getIndividualId());
+                item.put("idGrupal", c.getGroupId());
+                item.put("tipo", c.getClass().getName().replace("Domain.", ""));
+                item.put("categoria", c.getCategory());
+                item.put("talla", c.getSize());
+                item.put("material", c.getMaterial());
+                item.put("color", c.getColor());
+                item.put("descripcion", c.getDescription());
+                item.put("precio", c.getPrice());
+                item.put("temporada", c.getSeason());
+                item.put("genero", c.getGender());
+                data.add(item);
+            }
+            
+            stock.clearRecentlyAdded();
+            // Lo convierte a JSON
+            String json = new Gson().toJson(data);
+            
+            // Manda la información a JS
+            out.print(json);
         }
     }
 

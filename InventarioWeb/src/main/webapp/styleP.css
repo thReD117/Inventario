@@ -358,7 +358,8 @@ tbody tr:hover{
 }
 
 #formularioAgregar input[type=text],
-#formularioAgregar input[type=number] {
+#formularioAgregar input[type=number],
+select {
     width: 100%;
     padding: 10px;
     margin-bottom: 12px;
@@ -367,6 +368,7 @@ tbody tr:hover{
     box-sizing: border-box;
     font-size: 16px;
 }
+
 
 #idBorrar {
     width: 100%;

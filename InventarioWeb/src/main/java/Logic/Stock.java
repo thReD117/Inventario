@@ -5,14 +5,15 @@ import Domain.Clothing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class Stock {
     private HashMap<String, ClothingGroup> stock;
-    private ArrayList<Clothing> fullStock;
+    private ArrayList<Clothing> recentlyAdded;
     
     public Stock(){
         stock = new HashMap<>();
-        fullStock = new ArrayList<>();
+        recentlyAdded = new ArrayList<>();
     }
     
     /**
@@ -26,32 +27,37 @@ public class Stock {
         int quantity = clothing.getQuantity();
         clothing.setQuantity(1);
         for(int i=0; i<quantity; i++){
-            stock.get(clothing.getGroupId()).add(clothing);
-            DatabaseManager.insertItem(clothing);
+            Clothing temp = clothing.clone();
+            stock.get(clothing.getGroupId()).add(temp);
+            DatabaseManager.insertItem(temp);
+            recentlyAdded.add(temp);
         }
+    }
+    
+    
+    public List<Clothing> listRecentlyAdded(){
+        return recentlyAdded;
+    }
+    
+    public void clearRecentlyAdded(){
+        recentlyAdded.clear();
     }
     
     /**
      * @return Devulve un ArrayList con todas las prendas en todos los grupos del stock ordenado mediante el id completo.
      */
     public ArrayList<Clothing> listFullStock(){
-        createStockList();
-        return fullStock;
-    }
-   
-    /**
-     * No estoy seguro de si deberíamos mantener el arraylist todo el tiempo al mismo tiempo que el hashmap...
-     * depende mucho de como sea la implementación en web para no tener que estarlo volviendo a crear todo el rato
-     * pero por el momento este metodo lo crea desde cero
-     */
-    public void createStockList(){
+        ArrayList<Clothing> fullStock = new ArrayList<>();
         fullStock.clear();
         stock.values().forEach(clothingGroup -> {
             fullStock.addAll(clothingGroup.getClothingInGroup());
         });
         
         Collections.sort(fullStock);
+        
+        return fullStock;
     }
+   
     
     /**
      * Limpia todos los objetos de prenda que existan en el grupo pero no se deshace del objeto del grupo

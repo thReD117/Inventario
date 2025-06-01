@@ -48,27 +48,49 @@
             <div class="modal-content">
                 <h3>Agregar Elemento</h3>
                 <form id="formularioAgregar">
-                    <label for="categoria">Categoría:</label>
+                    <!-- Tipo es la clase a la que pertenece -->
                     <label for="tipo">Tipo:</label>
-                    <input type="text" id="tipo"><br><br>
+                    <select id="tipo" name="CATEGORY" required>
+                        <option value="" selected disabled hidden>Selecciona una opción</option>
+                        <option value="SUPERIOR">Superior</option>
+                        <option value="LOWER">Inferior</option>
+                        <option value="INTERIOR">Interior</option>
+                        <option value="ACCESSORIES">Accesorio</option>
+                    </select><br><br>
+                    
+                    <!-- Categoría son los valores del enum disponibles para el tipo -->
                     <label for="categoria">Categoría:</label>
-                    <input type="text" id="categoria"><br><br>
+                    <select id="categoria" name="CATEGORY_ENUM" required>
+                        <!-- Será rellenada de forma automática dependiendo de la opción seleccionada en tipo -->
+                    </select><br><br>
                     <label for="talla">Talla:</label>
-                    <input type="text" id="talla"><br><br>
+                    <input type="text" id="talla" name="SIZE" required><br><br>
                     <label for="material">Material:</label>
-                    <input type="text" id="material"><br><br>
+                    <input type="text" id="material" name="MATERIAL" required><br><br>
                     <label for="color">Color:</label>
-                    <input type="text" id="color"><br><br>
+                    <input type="text" id="color" name="COLOR" required><br><br>
                     <label for="descripcion">Descripción:</label>
-                    <input type="text" id="descripcion"><br><br>
+                    <input type="text" id="descripcion" name="DESCRIPTION" required><br><br>
                     <label for="precio">Precio:</label>
-                    <input type="text" id="precio"><br><br>
+                    <input type="text" id="precio" name="PRICE" required><br><br>
                     <label for="temporada">Temporada:</label>
-                    <input type="text" id="temporada"><br><br>
+                    <select id="temporada" name="SEASON" required>
+                        <option value="SPRING">Primavera</option>
+                        <option value="SUMMER">Verano</option>
+                        <option value="AUTUMN">Otoño</option>
+                        <option value="WINTER">Invierno</option>
+                        <option value="NA">No aplica</option>
+                    </select><br><br>
                     <label for="genero">Género:</label>
-                    <input type="text" id="genero"><br><br>
+                    <select id="genero" name="GENDER" required>
+                        <option value="MEN">Masculino</option>
+                        <option value="WOMEN">Femenino</option>
+                        <option value="UNISEX">Unisex</option>
+                    </select><br><br>
+                    <label for="precio">Cantidad:</label>
+                    <input type="number" id="cantidad" name="QUANTITY" required><br><br>
                     <div class="modal-buttons">
-                        <button type="button" id="botonAgregarModal">Agregar</button>
+                        <button type="submit" id="botonAgregarModal">Agregar</button>
                         <button type="button" id="botonCancelarAgregar">Cancelar</button>
                     </div>
                 </form>
@@ -127,6 +149,14 @@
                 const fieldOrder = ["idCompleta", "idIndividual", "idGrupal", "tipo", "categoria", "talla", "material",
                         "color", "descripcion", "precio", "temporada", "genero"];
 
+                function insertarFila(item){
+                    const nuevaFila = tablaBody.insertRow();
+                    fieldOrder.forEach(field => {
+                       const nuevaCelda = nuevaFila.insertCell();
+                       nuevaCelda.textContent = item[field];
+                    });
+                }
+
                 function renderizarTabla() {
                     tablaBody.innerHTML = ''; 
                     
@@ -134,38 +164,43 @@
                     fetch('ShowClothingsServlet')
                             .then(response => response.json())
                             .then(datosTabla => {
-                                datosTabla.forEach(item => {
-                                    const nuevaFila = tablaBody.insertRow();
-                                    fieldOrder.forEach(field => {
-                                       const nuevaCelda = nuevaFila.insertCell();
-                                       nuevaCelda.textContent = item[field];
-                                    });
-                                });
+                                datosTabla.forEach(item => insertarFila(item));
                             })
                             .catch(error => console.error('Error loading data:', error));
                 }
-
                 renderizarTabla(); // Renderizar la tabla inicial
 
-                // Funcionalidad para agregar un elemento
-                botonAgregarModal.addEventListener('click', () => {
-                    const nuevoItem = {
-                        tipo: document.getElementById('tipo').value,
-                        categoria: document.getElementById('categoria').value,
-                        talla: document.getElementById('talla').value,
-                        material: document.getElementById('material').value,
-                        color: document.getElementById('color').value,
-                        descripcion: document.getElementById('descripcion').value,
-                        precio: document.getElementById('precio').value,
-                        temporada: document.getElementById('temporada').value,
-                        genero: document.getElementById('genero').value
-                    };
+                
+                // Envia los datos al servidor
+                document.getElementById("formularioAgregar").addEventListener("submit", function(e) {
+                   e.preventDefault();
 
-                    datosTabla.push(nuevoItem);
-                    renderizarTabla();
-                    formularioAgregar.reset(); 
-                    modalAgregar.style.display = "none";
+                    // datos del formulario
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    form.reset();
+                    
+                    fetch("AddClothingServlet",{
+                                method: "POST",
+                                body: formData
+                            })
+                            .then(response => {
+                                if(!response.ok){
+                                    throw new Error("Error al enviar el formulario");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if(data.length === 0){
+                                    alert("No se realizó la operación");
+                                    return;
+                                }
+                                
+                                alert("Operación realizada exitosamente");
+                                data.forEach(item => insertarFila(item));
+                            });
                 });
+                
 
                 // Funcionalidad para borrar un elemento
                 botonBorrarModal.addEventListener('click', () => {
@@ -205,5 +240,14 @@
                 </tbody>
             </table>
         </div>
-    </div>        
+    </div>      
+    <script>
+        // Llama al servlet para obtener todos los valores del enum del tipo correspondiente
+        const categorySelect = document.getElementById("categoria");
+        document.getElementById("tipo").addEventListener('change', function() {
+            fetch('getEnumTypes?clothingType='+this.value)
+                    .then(response => response.text())
+                    .then(data => categorySelect.innerHTML = data)
+        });
+    </script>
 </body>
