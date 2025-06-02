@@ -158,7 +158,7 @@
                 }
             
                 fetch(`DeleteClothingServlet?id=${idABorrar}`, {
-                    method: 'GET'  // o 'POST' según tu servlet
+                    method: 'POST'  // o 'POST' según tu servlet
                 })
                 .then(response => {
                     if (!response.ok) {
