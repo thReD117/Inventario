@@ -127,7 +127,12 @@
                 const botonCancelarModalImprimir = document.getElementById('botonCancelarModal');
 
                 botonImprimirPrincipal.addEventListener('click', () => modalImprimir.style.display = "block");
-                botonImprimirModal.addEventListener('click', () => { window.print(); modalImprimir.style.display = "none"; });
+                botonImprimirModal.addEventListener('click', () => {
+                    // Abre el servlet que genera el PDF en una nueva pestaña
+                    window.open('GeneratePdfServlet', '_blank');
+                    modalImprimir.style.display = "none";
+                });
+
                 botonCancelarModalImprimir.addEventListener('click', () => modalImprimir.style.display = "none");
                 window.addEventListener('click', (event) => { if (event.target == modalImprimir) modalImprimir.style.display = "none"; });
 
@@ -145,7 +150,32 @@
                 // Modal de Borrar
                 const botonBorrarPrincipal = document.querySelector('.borrar');
                 const modalBorrar = document.getElementById('modalBorrar');
-                const botonBorrarModal = document.getElementById('botonBorrarModal');
+                const botonBorrarModal.addEventListener('click', () => {
+                const idABorrar = parseInt(inputIdBorrar.value);
+                if (!idABorrar) {
+                    alert("Ingresa un ID válido.");
+                    return;
+                }
+            
+                fetch(`DeleteClothingServlet?id=${idABorrar}`, {
+                    method: 'GET'  // o 'POST' según tu servlet
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error al borrar el elemento.");
+                    }
+                    return response.text();  // o json, según lo que devuelvas
+                })
+                .then(data => {
+                    alert(`Elemento con ID ${idABorrar} borrado correctamente.`);
+                    modalBorrar.style.display = "none";
+                    inputIdBorrar.value = '';
+                    renderizarTabla();  // para actualizar la tabla luego del borrado
+                })
+                .catch(error => {
+                    alert("No se pudo borrar: " + error.message);
+                });
+            });
                 const botonCancelarBorrar = document.getElementById('botonCancelarBorrar');
                 const inputIdBorrar = document.getElementById('idBorrar');
 
