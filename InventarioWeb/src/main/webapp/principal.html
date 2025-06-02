@@ -18,7 +18,7 @@
             </div>
             <button class="agregar"><i class="fa-solid fa-plus"></i></button>
             <button class="borrar"><i class="fa-solid fa-trash-can"></i></button>
-            <a href="index.html">
+            <button class="limpiar"><i class="fa-solid fa-broom"></i></button> <a href="index.html">
                 <button class="regresar">
                     <i class="fa-solid fa-circle-left"></i>
                 </button>
@@ -28,10 +28,10 @@
             <div class="formato">
                 <input type="text" class="box" placeholder="Buscar prenda...">
                 <button class="buscar">
-                    <i class="fa-solid fa-magnifying-glass"></i> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 <button class="imprimir">
-                    <i class="fa-solid fa-print"></i> 
+                    <i class="fa-solid fa-print"></i>
                 </button>
             </div>
         </div>
@@ -48,7 +48,6 @@
             <div class="modal-content">
                 <h3>Agregar Elemento</h3>
                 <form id="formularioAgregar">
-                    <!-- Tipo es la clase a la que pertenece -->
                     <label for="tipo">Tipo:</label>
                     <select id="tipo" name="CATEGORY" required>
                         <option value="" selected disabled hidden>Selecciona una opción</option>
@@ -57,12 +56,10 @@
                         <option value="INTERIOR">Interior</option>
                         <option value="ACCESSORIES">Accesorio</option>
                     </select><br><br>
-                    
-                    <!-- Categoría son los valores del enum disponibles para el tipo -->
+
                     <label for="categoria">Categoría:</label>
                     <select id="categoria" name="CATEGORY_ENUM" required>
-                        <!-- Será rellenada de forma automática dependiendo de la opción seleccionada en tipo -->
-                    </select><br><br>
+                        </select><br><br>
                     <label for="talla">Talla:</label>
                     <input type="text" id="talla" name="SIZE" required><br><br>
                     <label for="material">Material:</label>
@@ -109,6 +106,18 @@
             </div>
         </div>
 
+        <div id="modalLimpiarGrupo" class="modal">
+            <div class="modal-content">
+                <h3>Limpiar Grupo</h3>
+                <p>Ingrese el ID GRUPAL del grupo que desea limpiar:</p>
+                <input type="text" id="groupIdLimpiar" placeholder="Ej: GRP_001">
+                <div class="modal-buttons">
+                    <button type="button" id="botonLimpiarGrupoModal">Limpiar</button>
+                    <button type="button" id="botonCancelarLimpiarGrupo">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Modal de Imprimir
@@ -144,10 +153,68 @@
                 botonCancelarBorrar.addEventListener('click', () => modalBorrar.style.display = "none");
                 window.addEventListener('click', (event) => { if (event.target == modalBorrar) modalBorrar.style.display = "none"; });
 
-                
+                // --- Nuevo Modal para Limpiar Grupo ---
+                const botonLimpiarPrincipal = document.querySelector('.limpiar');
+                const modalLimpiarGrupo = document.getElementById('modalLimpiarGrupo');
+                const botonLimpiarGrupoModal = document.getElementById('botonLimpiarGrupoModal');
+                const botonCancelarLimpiarGrupo = document.getElementById('botonCancelarLimpiarGrupo');
+                const inputGroupIdLimpiar = document.getElementById('groupIdLimpiar'); // El nuevo input
+
+                botonLimpiarPrincipal.addEventListener('click', () => modalLimpiarGrupo.style.display = "block");
+                botonCancelarLimpiarGrupo.addEventListener('click', () => modalLimpiarGrupo.style.display = "none");
+                window.addEventListener('click', (event) => { if (event.target == modalLimpiarGrupo) modalLimpiarGrupo.style.display = "none"; });
+
+                // Lógica al presionar "Limpiar" dentro del modal de limpiar grupo
+                botonLimpiarGrupoModal.addEventListener('click', () => {
+                    const groupId = inputGroupIdLimpiar.value;
+
+                    if (groupId.trim() === '') {
+                        alert("Por favor, ingrese el ID GRUPAL.");
+                        return;
+                    }
+
+                    // Prepara los datos del formulario directamente
+                    const formData = new URLSearchParams();
+                    formData.append('groupId', groupId); // Añade el groupId como un parámetro de formulario
+
+                    fetch('ClearGroupServlet', {
+                        method: 'POST',
+                        headers: {
+                            // Este Content-Type es crucial para enviar datos de formulario
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: formData.toString() // Convierte los parámetros a una cadena URL-codificada
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            // Si la respuesta no es 2xx, intenta leer el error del servidor como JSON
+                            return response.json().then(err => Promise.reject(err));
+                        }
+                        // Si la respuesta fue exitosa, la procesa como JSON
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            renderizarTabla(); // Vuelve a cargar la tabla para reflejar los cambios
+                        } else {
+                            alert("Error al limpiar grupo: " + data.message);
+                        }
+                        inputGroupIdLimpiar.value = ''; // Limpia el input
+                        modalLimpiarGrupo.style.display = "none"; // Cierra el modal
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud:', error);
+                        alert(`Hubo un problema al limpiar el grupo. Detalles: ${error.message || 'Error de red/servidor'}`);
+                        inputGroupIdLimpiar.value = ''; // Limpia el input incluso si hay error
+                        modalLimpiarGrupo.style.display = "none"; // Cierra el modal
+                    });
+                });
+                // --- Fin del nuevo Modal para Limpiar Grupo ---
+
                 const tablaBody = document.querySelector('.table-bordered tbody');
                 const fieldOrder = ["idCompleta", "idIndividual", "idGrupal", "tipo", "categoria", "talla", "material",
-                        "color", "descripcion", "precio", "temporada", "genero"];
+                                    "color", "descripcion", "precio", "temporada", "genero"];
 
                 function insertarFila(item){
                     const nuevaFila = tablaBody.insertRow();
@@ -158,8 +225,8 @@
                 }
 
                 function renderizarTabla() {
-                    tablaBody.innerHTML = ''; 
-                    
+                    tablaBody.innerHTML = '';
+
                     // Recupera los datos de la tabla mediante el servlet
                     fetch('ShowClothingsServlet')
                             .then(response => response.json())
@@ -170,16 +237,14 @@
                 }
                 renderizarTabla(); // Renderizar la tabla inicial
 
-                
-                // Envia los datos al servidor
+                // Envia los datos al servidor para agregar
                 document.getElementById("formularioAgregar").addEventListener("submit", function(e) {
-                   e.preventDefault();
+                    e.preventDefault();
 
-                    // datos del formulario
                     const form = e.target;
                     const formData = new FormData(form);
                     form.reset();
-                    
+
                     fetch("AddClothingServlet",{
                                 method: "POST",
                                 body: formData
@@ -192,29 +257,46 @@
                             })
                             .then(data => {
                                 if(data.length === 0){
-                                    alert("No se realizó la operación");
+                                    alert("No se realizó la operación.");
                                     return;
                                 }
-                                
-                                alert("Operación realizada exitosamente");
-                                data.forEach(item => insertarFila(item));
+                                alert("Operación realizada exitosamente.");
+                                renderizarTabla(); // Re-renderiza la tabla después de agregar
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert("Hubo un error al agregar el elemento: " + error.message);
                             });
                 });
-                
 
-                // Funcionalidad para borrar un elemento
+                // Funcionalidad para borrar un elemento individual
                 botonBorrarModal.addEventListener('click', () => {
                     const idABorrar = parseInt(inputIdBorrar.value);
-                    const indiceABorrar = datosTabla.findIndex(item => item.idIndividual === idABorrar);
 
-                    if (indiceABorrar !== -1) {
-                        datosTabla.splice(indiceABorrar, 1);
-                        renderizarTabla();
-                        inputIdBorrar.value = ''; 
-                        modalBorrar.style.display = "none";
-                    } else {
-                        alert(`No se encontró ningún elemento con ID Individual: ${idABorrar}`);
+                    if (isNaN(idABorrar)) {
+                        alert("Por favor, ingrese un ID individual válido.");
+                        return;
                     }
+
+                    fetch(`DeleteClothingServlet?idIndividual=${idABorrar}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                        return response.text();
+                    })
+                    .then(message => {
+                        alert(message);
+                        renderizarTabla(); // Re-renderiza la tabla después de borrar
+                        inputIdBorrar.value = '';
+                        modalBorrar.style.display = "none";
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(`No se pudo borrar el elemento: ${error.message}`);
+                    });
                 });
             });
         </script>
@@ -240,7 +322,7 @@
                 </tbody>
             </table>
         </div>
-    </div>      
+    </div>
     <script>
         // Llama al servlet para obtener todos los valores del enum del tipo correspondiente
         const categorySelect = document.getElementById("categoria");
@@ -251,3 +333,4 @@
         });
     </script>
 </body>
+</html>
