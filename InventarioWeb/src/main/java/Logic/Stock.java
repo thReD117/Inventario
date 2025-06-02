@@ -177,4 +177,28 @@ public class Stock {
             group.fixPersistentCounter();
         });
     }
+    private List<Clothing> fullStock;
+    
+    private void createStockList() {
+        fullStock = new ArrayList<>();
+    }
+
+    public List<Clothing> getAllClothing() {
+            createStockList(); // Para asegurarnos que fullStock está actualizado
+            return new ArrayList<>(fullStock);
+        }
+         /**
+         * Elimina una prenda por su ID.
+         * @param id el ID completo de la prenda
+         * @return true si se eliminó, false si no existía
+         */
+        public boolean removeById(String id) {
+            try {
+                deleteClothingById(id);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
 }
+
