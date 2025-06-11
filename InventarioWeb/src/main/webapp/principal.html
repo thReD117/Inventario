@@ -281,7 +281,7 @@
                     fetch('DeleteClothingByIdServlet', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: `id=${idABorrar}&_method=DELETE`
+                        body: `groupId=${groupId}&id=${idABorrar}`
                     })
                     .then(response => {
                         if (!response.ok) {
@@ -299,6 +299,7 @@
                         console.error('Error:', error);
                         alert(`No se pudo borrar el elemento: ${error.message}`);
                     });
+
                 });
             });
         </script>
