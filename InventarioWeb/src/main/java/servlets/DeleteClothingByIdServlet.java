@@ -19,7 +19,7 @@ public class DeleteClothingByIdServlet extends HttpServlet {
             throws ServletException, IOException {
         // Obtenemos el parámetro "id" de la petición
         String id = request.getParameter("id");
-
+        id = id.replaceFirst("^0+(?!$)", ""); 
         // Obtenemos el stock desde el contexto
         Stock stock = (Stock) getServletContext().getAttribute("stock");
 
