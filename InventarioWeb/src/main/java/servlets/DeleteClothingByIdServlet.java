@@ -52,8 +52,28 @@ public class DeleteClothingByIdServlet extends HttpServlet {
     @Override
 protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    processRequest(request, response);
+
+    String queryString = request.getQueryString(); // obtiene "id=XXX"
+    String id = null;
+
+    if (queryString != null && queryString.startsWith("id=")) {
+        id = queryString.substring(3); // ejemplo simple para obtener el valor de id
+    }
+
+    // El resto igual
+    Stock stock = (Stock) getServletContext().getAttribute("stock");
+    boolean success = stock.removeById(id);
+
+    response.setContentType("text/html;charset=UTF-8");
+    try (PrintWriter out = response.getWriter()) {
+        if (success) {
+            out.println("Prenda eliminada con éxito.");
+        } else {
+            out.println("No se encontró la prenda con ID: " + id);
+        }
+    }
 }
+
 
 
     @Override
