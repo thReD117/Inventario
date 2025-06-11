@@ -278,8 +278,10 @@
                         return;
                     }
 
-                    fetch(`DeleteClothingServlet?idIndividual=${idABorrar}`, {
-                        method: 'DELETE'
+                    fetch('DeleteClothingByIdServlet', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `id=${idABorrar}&_method=DELETE`
                     })
                     .then(response => {
                         if (!response.ok) {
