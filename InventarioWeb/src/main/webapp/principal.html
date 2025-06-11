@@ -122,6 +122,10 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Modal de Imprimir
                 const botonImprimirPrincipal = document.querySelector('.imprimir');
+
+                botonImprimirPrincipal.addEventListener('click', () => {
+                    generarPDF();
+                });
                 const modalImprimir = document.getElementById('modalImprimir');
                 const botonImprimirModal = document.getElementById('botonImprimirModal');
                 const botonCancelarModalImprimir = document.getElementById('botonCancelarModal');
@@ -303,6 +307,19 @@
                     });
                 });
             });
+                        function generarPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.setFontSize(18);
+                doc.text("Informe de Prendas", 14, 22);
+
+                const tabla = document.querySelector('.table-bordered');
+                doc.autoTable({ html: tabla, startY: 30 });
+
+                doc.save('informe_prendas.pdf');
+            }
+
         </script>
         <div class="tabla">
             <table class="table-bordered table-striped table-condensed table-fixed">
@@ -328,6 +345,7 @@
         </div>
     </div>
     <script>
+        
         // Llama al servlet para obtener todos los valores del enum del tipo correspondiente
         const categorySelect = document.getElementById("categoria");
         document.getElementById("tipo").addEventListener('change', function() {
@@ -336,5 +354,8 @@
                     .then(data => categorySelect.innerHTML = data)
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
 </body>
 </html>
