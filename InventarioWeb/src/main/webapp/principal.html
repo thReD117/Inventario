@@ -124,10 +124,11 @@
                 const botonImprimirPrincipal = document.querySelector('.imprimir');
 
                 const modalImprimir = document.getElementById('modalImprimir');
-                const botonImprimirModal = document.getElementById('botonImprimirModal');
-                botonImprimirModal.addEventListener('click', () => {
+                 modalImprimir.addEventListener('click', () => {
                     generarPDF();
                 });
+                const botonImprimirModal = document.getElementById('botonImprimirModal');
+               
                 const botonCancelarModalImprimir = document.getElementById('botonCancelarModal');
 
                 botonImprimirPrincipal.addEventListener('click', () => modalImprimir.style.display = "block");
