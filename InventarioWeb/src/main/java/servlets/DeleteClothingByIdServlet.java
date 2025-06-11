@@ -44,10 +44,39 @@ public class DeleteClothingByIdServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    
+    // Obtenemos los parámetros
+    String groupId = request.getParameter("groupId");
+    String id = request.getParameter("id");
+    
+    // Validamos
+    if (groupId == null || id == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Faltan parámetros: groupId o id");
+        return;
     }
+    
+    // Formamos el id completo
+    String fullId = groupId + "-" + id;
+    
+    // Obtenemos el stock desde el contexto
+    Stock stock = (Stock) getServletContext().getAttribute("stock");
+    
+    // Intentamos eliminar la prenda
+    boolean success = stock.removeById(fullId);
+
+    // Preparamos la respuesta
+    response.setContentType("text/html;charset=UTF-8");
+    try (PrintWriter out = response.getWriter()) {
+        if (success) {
+            out.println("Prenda eliminada con éxito.");
+        } else {
+            out.println("No se encontró la prenda con ID: " + fullId);
+        }
+    }
+}
+
     
     @Override
 protected void doDelete(HttpServletRequest request, HttpServletResponse response)
